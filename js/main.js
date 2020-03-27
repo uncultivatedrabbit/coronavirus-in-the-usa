@@ -16,7 +16,8 @@ function createMap(covidData) {
       attribution: null,
       tileSize: 512,
       zoomOffset: -1,
-      maxZoom: 18,
+      maxZoom: 8,
+      minZoom: 4
     }
   ).addTo(STORE.map);
 
