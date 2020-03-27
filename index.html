@@ -14,13 +14,25 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/chart.css" />
+    <link rel="stylesheet" href="css/toggle.css" />
     <title>COVID-19 In The USA</title>
     <link href="/images/favicon.ico" rel="icon" type="image/x-icon" />
-    <script src="https://kit.fontawesome.com/09e706ee12.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/09e706ee12.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <div id="selector">
+      <p class="switch-label">MAP</p>
+      <label class="switch">
+        <input id="toggle" type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+      <p class="switch-label">GRAPHS</p>
+    </div>
     <div id="map"></div>
-    <div class="data-line-charts">
+    <div id="graphs" class="data-line-charts">
       <div class="chart-container">
         <canvas
           id="positiveChart"
@@ -44,5 +56,6 @@
     <script src="js/us-states.js"></script>
     <script src="js/main.js"></script>
     <script src="js/chart.js"></script>
+    <script src="js/toggle.js"></script>
   </body>
 </html>

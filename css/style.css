@@ -4,20 +4,30 @@ body {
   overflow: hidden;
   background: black;
 }
-html, body, #map {
+html,
+body,
+#map {
   height: 100%;
   width: 100vw;
 }
-#map{
-  /* display: none; */
+#map,
+#graphs {
+  height: 100%;
+  transition: all 1s linear;
 }
+.hidden {
+  opacity: 0;
+  height: 0px!important;
+  overflow: hidden;
+}
+
 .info {
   padding: 6px 8px;
   font-size: 16px;
   color: #d2dae2;
   background: rgb(0, 0, 0);
   background: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   letter-spacing: 2px;
 }
@@ -36,22 +46,22 @@ html, body, #map {
   font-weight: 700;
 }
 .legend i {
-  width: 23px;
-  height: 25px;
+  width: 22px;
+  height: 23px;
   float: left;
   margin-right: 8px;
 }
-.leaflet-left, .leaflet-right{
+.leaflet-left,
+.leaflet-right {
   margin: 0 2em;
 }
-.danger{
-  color:#ff3f34;
+.danger {
+  color: #ff3f34;
 }
 
-.info-title{
+.info-title {
   font-weight: 700;
 }
-.info-title{
+.info-title {
   color: #0fbcf9;
 }
-
