@@ -2,6 +2,7 @@ const STORE = {
   geojson: "",
   map: "",
   info: "",
+  totalInfo: "",
 };
 
 function createMap(covidData) {
@@ -95,9 +96,55 @@ function createMap(covidData) {
     style: style,
     onEachFeature: onEachFeature,
   }).addTo(STORE.map);
-  STORE.map.attributionControl.addAttribution('Covid-19 data &copy; <a target="_blank" href="https://covidtracking.com">The COVID Tracking Project</a>');
+  STORE.map.attributionControl.addAttribution(
+    'Covid-19 data &copy; <a target="_blank" href="https://covidtracking.com">The COVID Tracking Project</a>'
+  );
   createInfoControls();
   createLegend();
+  getTotalCumulativeData();
+}
+
+function createTotalsInfoDisplay(totalData) {
+  if (
+    String(totalData[0].positive).length > 3 &&
+    !String(totalData[0].positive).includes(",")
+  ) {
+    const largerThanThousand = String(totalData[0].positive).split("");
+    largerThanThousand.splice(-3, 0, ",");
+    totalData[0].positive = largerThanThousand.join("");
+  } 
+  if (
+    String(totalData[0].negative).length > 3 &&
+    !String(totalData[0].negative).includes(",")
+  ) {
+    const largerThanThousand = String(totalData[0].negative).split("");
+    largerThanThousand.splice(-3, 0, ",");
+    totalData[0].negative = largerThanThousand.join("");
+  } 
+  if (
+    String(totalData[0].death).length > 3 &&
+    !String(totalData[0].death).includes(",")
+  ) {
+    const largerThanThousand = String(totalData[0].death).split("");
+    largerThanThousand.splice(-3, 0, ",");
+    totalData[0].death = largerThanThousand.join("");
+  } 
+  STORE.totalInfo = L.control({ position: "bottomleft" });
+  STORE.totalInfo.onAdd = function(map) {
+    this._div = L.DomUtil.create("div", "total-info info"); // create a div with a class "info"
+    this.update();
+    return this._div;
+  };
+  STORE.totalInfo.update = function(props) {
+    this._div.innerHTML = `
+      <h4>COUNTRY-WIDE TOTALS</h4>
+      <span class="info-title">TOTAL TESTED POSITIVE:</span> ${totalData[0].positive}<br>
+      <span class="info-title">TOTAL TESTED NEGATIVE:</span> ${totalData[0].negative}<br>
+      <span class="info-title">TOTAL DEATHS:</span> ${totalData[0].death} <br>
+      `;
+  };
+
+  STORE.totalInfo.addTo(STORE.map);
 }
 
 function createInfoControls() {
@@ -108,24 +155,29 @@ function createInfoControls() {
     return this._div;
   };
 
-  // method that we will use to update the control based on feature properties passed
-
   STORE.info.update = function(props) {
     if (props) {
       if (props.deaths === null) {
         props.deaths = 0;
       }
-      // if(String(props.positive).length > 3){
-      //   props.positive = +(String(props.positive).split('').slice(-3, 0, ',').join(''));
-      // }
-      this._div.innerHTML = `
-      <h4>DAILY CORONAVIRUS TOTALS IN THE US</h4>
-      <b>STATE:</b> ${props.name}<br>
-      <b>Positive Cases:</b> ${props.positive}<br>
-      <b>DEATHS:</b> ${props.deaths}<br>
-      <b>LAST UPDATED: ${props.lastChecked.slice(0,4)}</b>
-      `;
+      if (
+        String(props.positive).length > 3 &&
+        !String(props.positive).includes(",")
+      ) {
+        const largerThanThousand = String(props.positive).split("");
+        largerThanThousand.splice(-3, 0, ",");
+        props.positive = largerThanThousand.join("");
+      }
     }
+      this._div.innerHTML = "<h4>DAILY <span class='danger'>CORONAVIRUS</span> TOTALS BY STATE</h4>" + (props ? `<div class="info-data">
+      <span class="info-title">STATE:</span> ${props.name}<br>
+      <span class="info-title">TESTED POSITIVE:</span> ${props.positive}<br>
+      <span class="info-title">DEATHS:</span> ${props.deaths}<br>
+      <span class="info-title">LAST UPDATED: </span>${props.lastChecked.slice(
+        0,
+        4
+      )}
+      </div>` : 'Hover Over State');
   };
   STORE.info.addTo(STORE.map);
 }
@@ -154,6 +206,7 @@ function createLegend() {
 }
 
 function getColor(d) {
+  d = +String(d).replace(/[,]/, "");
   return d > 10000
     ? "#67000d"
     : d > 5000
@@ -187,6 +240,20 @@ function getPositiveResults() {
     .catch(err => console.log(err));
 }
 
+function getTotalCumulativeData() {
+  const url = "https://covidtracking.com/api/us";
+  fetch(url)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error("something went wrong");
+      }
+    })
+    .then(data => createTotalsInfoDisplay(data))
+    .catch(err => console.log(err));
+}
+
 function style(data) {
   return {
     fillColor: getColor(data.properties.positive),
@@ -202,7 +269,7 @@ function highlightFeature(e) {
   const layer = e.target;
   layer.setStyle({
     weight: 2,
-    color: "#666",
+    color: "#1e272e",
     dashArray: "",
     fillOpacity: 0.7,
   });
