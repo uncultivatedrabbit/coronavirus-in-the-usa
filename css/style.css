@@ -3,6 +3,18 @@ body {
   margin: 0;
   overflow: hidden;
   background: black;
+  font-family: "Open Sans", sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+}
+button:focus, select:focus {
+  outline: 0;
 }
 html,
 body,
@@ -15,9 +27,10 @@ body,
   height: 100%;
   transition: all 1s linear;
 }
+
 .hidden {
   opacity: 0;
-  height: 0px!important;
+  height: 0px !important;
   overflow: hidden;
 }
 

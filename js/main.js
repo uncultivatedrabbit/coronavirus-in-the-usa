@@ -3,25 +3,7 @@ const STORE = {
   map: "",
   info: "",
   totalInfo: "",
-};
-
-function createMap(covidData) {
-  const ACCESS_TOKEN =
-    "pk.eyJ1IjoidW5jdWx0aXZhdGVkcmFiYml0IiwiYSI6ImNrNWs1YXJ0YjBha2IzanF4YmhmcHR2ZTUifQ.3YhMGRpoosV0u46J39b3lQ";
-  STORE.map = L.map("map").setView([37.8, -96], 4);
-  L.tileLayer(
-    `https://api.mapbox.com/styles/v1/uncultivatedrabbit/ck87dyeh90cp71in0vmxym7ox/tiles/256/{z}/{x}/{y}@2x?access_token=${ACCESS_TOKEN}`,
-    {
-      id: "mapbox/light-v9",
-      attribution: null,
-      tileSize: 512,
-      zoomOffset: -1,
-      maxZoom: 8,
-      minZoom: 4
-    }
-  ).addTo(STORE.map);
-
-  const states = [
+  states: [
     ["Alabama", "AL"],
     ["Alaska", "AK"],
     ["Arizona", "AZ"],
@@ -74,12 +56,29 @@ function createMap(covidData) {
     ["Wisconsin", "WI"],
     ["Wyoming", "WY"],
     ["Puerto Rico", "PR"],
-  ];
+  ]
+};
+
+function createMap(covidData) {
+  const ACCESS_TOKEN =
+    "pk.eyJ1IjoidW5jdWx0aXZhdGVkcmFiYml0IiwiYSI6ImNrNWs1YXJ0YjBha2IzanF4YmhmcHR2ZTUifQ.3YhMGRpoosV0u46J39b3lQ";
+  STORE.map = L.map("map").setView([37.8, -96], 4);
+  L.tileLayer(
+    `https://api.mapbox.com/styles/v1/uncultivatedrabbit/ck87dyeh90cp71in0vmxym7ox/tiles/256/{z}/{x}/{y}@2x?access_token=${ACCESS_TOKEN}`,
+    {
+      id: "mapbox/light-v9",
+      attribution: null,
+      tileSize: 512,
+      zoomOffset: -1,
+      maxZoom: 8,
+      minZoom: 4
+    }
+  ).addTo(STORE.map);
 
   statesData.features.map((stateData, i) => {
     const state = stateData.properties;
-    if (state.name === states[i][0]) {
-      state.appreviation = states[i][1];
+    if (state.name === STORE.states[i][0]) {
+      state.appreviation = STORE.states[i][1];
     }
   });
   covidData.map(d => {

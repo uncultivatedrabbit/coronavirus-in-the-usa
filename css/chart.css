@@ -1,10 +1,10 @@
-.data-line-charts{
+.data-line-charts {
   width: 100vw;
   height: 100vh;
 }
 
-.chart-container{
-  width: 45%;
+.chart-container {
+  width: 40%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -12,6 +12,44 @@
   justify-content: space-evenly;
   margin: 0 auto;
   background: black;
-  color: #FFF;
+  color: #fff;
   overflow: auto;
+}
+
+.charts-label {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.submit-btn, select{
+  background: rgb(27, 27, 27);
+  color: white;
+  text-transform: uppercase;
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 3px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.state-label{
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 1rem;
+}
+.submit-btn{
+  padding: 6px;
+}
+select{
+  padding: 5px;
+}
+.submit-btn:hover,
+.submit-btn:focus,
+select:hover {
+  cursor: pointer;
+}
+.submit-btn:hover{
+  background: white;
+  color: black;
+  font-weight: 700;
 }

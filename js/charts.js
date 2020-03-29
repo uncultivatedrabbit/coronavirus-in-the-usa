@@ -1,5 +1,23 @@
-function getDailyCoronavirusData() {
-  const url = "https://covidtracking.com/api/us/daily";
+function getUserInput() {
+  const form = document.getElementById("states-form");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const selector = document.getElementById("states");
+    const userSelection = selector.options[selector.selectedIndex].value;
+    const userSelectedState = selector.options[selector.selectedIndex].getAttribute("data-state-name")
+    getDailyCoronavirusData(userSelection, userSelectedState);
+  });
+}
+
+function getDailyCoronavirusData(userSelection, userSelectedState) {
+  let url;
+  if (userSelection === undefined) {
+    url = `https://covidtracking.com/api/us/daily`;
+  } else {
+    const label = document.getElementById("charts-label");
+    label.innerText = userSelectedState;
+    url = `https://covidtracking.com/api/states/daily?state=${userSelection}`;
+  }
   fetch(url)
     .then(res => {
       if (res.ok) {
@@ -8,14 +26,29 @@ function getDailyCoronavirusData() {
         throw new Error(res.statusText);
       }
     })
-    .then(data => dataParser(data));
+    .then(data => {
+      const oldPositiveChart = document.getElementById("positiveChart");
+      const newPositiveChart = document.createElement("canvas");
+      newPositiveChart.id = "positiveChart";
+      newPositiveChart.setAttribute("aria-label", "Coronavirus positive graph");
+      newPositiveChart.setAttribute("role", "img");
+      oldPositiveChart.parentNode.replaceChild(
+        newPositiveChart,
+        oldPositiveChart
+      );
+      const oldDeathChart = document.getElementById("deathChart");
+      const newDeathChart = document.createElement("canvas");
+      newDeathChart.id = "deathChart";
+      newDeathChart.setAttribute("aria-label", "Coronavirus death graph");
+      newDeathChart.setAttribute("role", "img");
+      oldDeathChart.parentNode.replaceChild(newDeathChart, oldDeathChart);
+      dataParser(data);
+    });
 }
-getDailyCoronavirusData();
 
 function dataParser(data) {
   let dailyDeaths = [];
   let dailyPositives = [];
-
   data.forEach(dailyData => {
     dailyPositives.push(dailyData.positive);
     if (dailyData.death === null) {
@@ -29,16 +62,16 @@ function dataParser(data) {
 
 function createDeathChart(dailyDeaths) {
   const ctx = document.getElementById("deathChart").getContext("2d");
-  const chart = new Chart(ctx, {
+  const deathChart = new Chart(ctx, {
     type: "line",
     data: {
       datasets: [
         {
           data: dailyDeaths,
-          label: 'Nationwide Coronavirus Deaths',
+          label: "Coronavirus Deaths",
           borderWidth: 2,
           borderColor: "#c23616",
-          backgroundColor:"#c23616",
+          backgroundColor: "#c23616",
           fill: true,
           pointRadius: 2,
         },
@@ -55,9 +88,9 @@ function createDeathChart(dailyDeaths) {
         intersect: true,
         onHover: function(e) {
           const point = this.getElementAtEvent(e);
-          if (point.length) e.target.style.cursor = 'pointer';
-          else e.target.style.cursor = 'default';
-       }
+          if (point.length) e.target.style.cursor = "pointer";
+          else e.target.style.cursor = "default";
+        },
       },
       scales: {
         yAxes: [
@@ -66,10 +99,10 @@ function createDeathChart(dailyDeaths) {
               color: "rgba(210, 218, 226, 0.2)",
             },
             ticks: {
-              fontColor: "white"
+              fontColor: "white",
+              beginAtZero:true
             },
           },
-          
         ],
         xAxes: [
           {
@@ -88,7 +121,7 @@ function createDeathChart(dailyDeaths) {
             },
             ticks: {
               source: "data",
-              fontColor: "white"
+              fontColor: "white",
             },
           },
         ],
@@ -98,11 +131,12 @@ function createDeathChart(dailyDeaths) {
         labels: {
           fontColor: "white",
           fontSize: 18,
-          letterSpacing: "5px"
-      }
+          letterSpacing: "5px",
+        },
       },
       animation: {
-        duration: 0,
+        duration: 1000,
+        animationEasing: 'easeInBounce',
       },
     },
     plugins: [
@@ -126,16 +160,16 @@ function createDeathChart(dailyDeaths) {
 
 function createPositivesChart(dailyPositives) {
   const ctx = document.getElementById("positiveChart").getContext("2d");
-  const chart = new Chart(ctx, {
+  const postivesChart = new Chart(ctx, {
     type: "line",
     data: {
       datasets: [
         {
           data: dailyPositives,
-          label: "Nationwide Coronavirus Positive Cases",
+          label: "Coronavirus Positive Cases",
           borderWidth: 2,
           borderColor: "#0097e6",
-          backgroundColor:"#0097e6",
+          backgroundColor: "#0097e6",
           fill: true,
           pointRadius: 2,
         },
@@ -152,19 +186,19 @@ function createPositivesChart(dailyPositives) {
         intersect: true,
         onHover: function(e) {
           const point = this.getElementAtEvent(e);
-          if (point.length) e.target.style.cursor = 'pointer';
-          else e.target.style.cursor = 'default';
-       }
+          if (point.length) e.target.style.cursor = "pointer";
+          else e.target.style.cursor = "default";
+        },
       },
       scales: {
-
         yAxes: [
           {
             gridLines: {
               color: "rgba(210, 218, 226, 0.2)",
             },
             ticks: {
-              fontColor: "white"
+              fontColor: "white",
+              beginAtZero:true
             },
           },
         ],
@@ -185,21 +219,22 @@ function createPositivesChart(dailyPositives) {
             },
             ticks: {
               source: "data",
-              fontColor: "white"
+              fontColor: "white",
             },
           },
         ],
       },
       legend: {
         display: true,
-          labels: {
-              fontColor: "white",
-              fontSize: 18,
-              letterSpacing: "5px"
-          }
+        labels: {
+          fontColor: "white",
+          fontSize: 18,
+          letterSpacing: "5px",
+        },
       },
       animation: {
-        duration: 0,
+        duration: 1000,
+        animationEasing: 'easeInBounce',
       },
     },
     plugins: [
@@ -221,4 +256,7 @@ function createPositivesChart(dailyPositives) {
   });
 }
 
-(() => getDailyCoronavirusData())();
+(() => {
+  getDailyCoronavirusData();
+  getUserInput();
+})();
