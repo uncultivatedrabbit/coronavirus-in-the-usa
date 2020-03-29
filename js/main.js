@@ -56,13 +56,16 @@ const STORE = {
     ["Wisconsin", "WI"],
     ["Wyoming", "WY"],
     ["Puerto Rico", "PR"],
-  ]
+  ],
 };
 
 function createMap(covidData) {
+  const corner1 = L.latLng(6.8217305109,-179.1295026197);
+  const corner2 = L.latLng(74.2072030765,-49.9302838697);
+  const bounds = L.latLngBounds(corner1, corner2);
   const ACCESS_TOKEN =
     "pk.eyJ1IjoidW5jdWx0aXZhdGVkcmFiYml0IiwiYSI6ImNrNWs1YXJ0YjBha2IzanF4YmhmcHR2ZTUifQ.3YhMGRpoosV0u46J39b3lQ";
-  STORE.map = L.map("map").setView([37.8, -96], 4);
+  STORE.map = L.map("map").setView([37.8, -96], 4).setMaxBounds(bounds);
   L.tileLayer(
     `https://api.mapbox.com/styles/v1/uncultivatedrabbit/ck87dyeh90cp71in0vmxym7ox/tiles/256/{z}/{x}/{y}@2x?access_token=${ACCESS_TOKEN}`,
     {
@@ -71,7 +74,7 @@ function createMap(covidData) {
       tileSize: 512,
       zoomOffset: -1,
       maxZoom: 8,
-      minZoom: 4
+      minZoom: 4,
     }
   ).addTo(STORE.map);
 
@@ -112,7 +115,7 @@ function createTotalsInfoDisplay(totalData) {
     const largerThanThousand = String(totalData[0].positive).split("");
     largerThanThousand.splice(-3, 0, ",");
     totalData[0].positive = largerThanThousand.join("");
-  } 
+  }
   if (
     String(totalData[0].negative).length > 3 &&
     !String(totalData[0].negative).includes(",")
@@ -120,7 +123,7 @@ function createTotalsInfoDisplay(totalData) {
     const largerThanThousand = String(totalData[0].negative).split("");
     largerThanThousand.splice(-3, 0, ",");
     totalData[0].negative = largerThanThousand.join("");
-  } 
+  }
   if (
     String(totalData[0].death).length > 3 &&
     !String(totalData[0].death).includes(",")
@@ -128,7 +131,7 @@ function createTotalsInfoDisplay(totalData) {
     const largerThanThousand = String(totalData[0].death).split("");
     largerThanThousand.splice(-3, 0, ",");
     totalData[0].death = largerThanThousand.join("");
-  } 
+  }
   STORE.totalInfo = L.control({ position: "bottomleft" });
   STORE.totalInfo.onAdd = function(map) {
     this._div = L.DomUtil.create("div", "total-info info"); // create a div with a class "info"
@@ -169,7 +172,10 @@ function createInfoControls() {
         props.positive = largerThanThousand.join("");
       }
     }
-      this._div.innerHTML = "<h4>DAILY <span class='danger'>CORONAVIRUS</span> TOTALS BY STATE</h4>" + (props ? `<div class="info-data">
+    this._div.innerHTML =
+      "<h4>DAILY <span class='danger'>CORONAVIRUS</span> TOTALS BY STATE</h4>" +
+      (props
+        ? `<div class="info-data">
       <span class="info-title">STATE:</span> ${props.name}<br>
       <span class="info-title">TESTED POSITIVE:</span> ${props.positive}<br>
       <span class="info-title">DEATHS:</span> ${props.deaths}<br>
@@ -177,7 +183,8 @@ function createInfoControls() {
         0,
         4
       )}
-      </div>` : 'Hover Over State');
+      </div>`
+        : "Hover Over State");
   };
   STORE.info.addTo(STORE.map);
 }
