@@ -39,16 +39,20 @@
     <div id="graphs" class="data-line-charts">
       <div class="chart-container">
         <h2 id="charts-label" class="charts-label">Nationwide</h2>
-        <canvas
-          id="positiveChart"
-          aria-label="Coronavirus positive graph"
-          role="img"
-        ></canvas>
-        <canvas
-          id="deathChart"
-          aria-label="Coronavirus death graph"
-          role="img"
-        ></canvas>
+        <div id="chart1">
+          <canvas
+            id="positiveChart"
+            aria-label="Coronavirus positive graph"
+            role="img"
+          ></canvas>
+        </div>
+        <div id="chart2">
+          <canvas
+            id="deathChart"
+            aria-label="Coronavirus death graph"
+            role="img"
+          ></canvas>
+        </div>
         <form id="states-form">
           <label class="state-label" for="states">Select State:</label>
           <select name="states" id="states">

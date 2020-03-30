@@ -4,7 +4,7 @@
 }
 
 .chart-container {
-  width: 40%;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,9 @@
   color: #fff;
   overflow: auto;
 }
-
+#chart1, #chart2{
+  width: 50%;
+}
 .charts-label {
   text-transform: uppercase;
   letter-spacing: 3px;
