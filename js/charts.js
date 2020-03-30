@@ -4,7 +4,9 @@ function getUserInput() {
     e.preventDefault();
     const selector = document.getElementById("states");
     const userSelection = selector.options[selector.selectedIndex].value;
-    const userSelectedState = selector.options[selector.selectedIndex].getAttribute("data-state-name")
+    const userSelectedState = selector.options[
+      selector.selectedIndex
+    ].getAttribute("data-state-name");
     getDailyCoronavirusData(userSelection, userSelectedState);
   });
 }
@@ -74,6 +76,7 @@ function createDeathChart(dailyDeaths) {
           backgroundColor: "#c23616",
           fill: true,
           pointRadius: 2,
+          pointHoverRadius: 10,
         },
       ],
     },
@@ -82,6 +85,10 @@ function createDeathChart(dailyDeaths) {
       tooltips: {
         mode: "index",
         intersect: false,
+        titleFontFamily: "Montserrat",
+        titleFontSize: 16,
+        bodyFontFamily: "Open Sans",
+        bodyFontSize: 14,
       },
       hover: {
         mode: "nearest",
@@ -100,7 +107,7 @@ function createDeathChart(dailyDeaths) {
             },
             ticks: {
               fontColor: "white",
-              beginAtZero:true
+              beginAtZero: true,
             },
           },
         ],
@@ -136,7 +143,7 @@ function createDeathChart(dailyDeaths) {
       },
       animation: {
         duration: 1000,
-        animationEasing: 'easeInBounce',
+        animationEasing: "easeInBounce",
       },
     },
     plugins: [
@@ -172,6 +179,7 @@ function createPositivesChart(dailyPositives) {
           backgroundColor: "#0097e6",
           fill: true,
           pointRadius: 2,
+          pointHoverRadius: 10,
         },
       ],
     },
@@ -179,7 +187,11 @@ function createPositivesChart(dailyPositives) {
       responsive: true,
       tooltips: {
         mode: "index",
-        intersect: false,
+        intersect: true,
+        titleFontFamily: "Montserrat",
+        titleFontSize: 16,
+        bodyFontFamily: "Open Sans",
+        bodyFontSize: 14,
       },
       hover: {
         mode: "nearest",
@@ -198,7 +210,7 @@ function createPositivesChart(dailyPositives) {
             },
             ticks: {
               fontColor: "white",
-              beginAtZero:true
+              beginAtZero: true,
             },
           },
         ],
@@ -234,7 +246,7 @@ function createPositivesChart(dailyPositives) {
       },
       animation: {
         duration: 1000,
-        animationEasing: 'easeInBounce',
+        animationEasing: "easeInBounce",
       },
     },
     plugins: [
