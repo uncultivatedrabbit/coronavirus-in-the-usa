@@ -53,7 +53,7 @@ function dataParser(data) {
   let dailyPositives = [];
   data.forEach(dailyData => {
     dailyPositives.push(dailyData.positive);
-    if (dailyData.death === null) {
+    if (dailyData.death === null || !dailyData.death) {
       dailyData.death = 0;
     }
     dailyDeaths.push(dailyData.death);
