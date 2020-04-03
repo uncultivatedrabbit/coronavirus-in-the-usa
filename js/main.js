@@ -122,6 +122,7 @@ function createTotalsInfoDisplay(totalData) {
   ) {
     const largerThanThousand = String(totalData[0].negative).split("");
     largerThanThousand.splice(-3, 0, ",");
+    largerThanThousand.splice(-7, 0, ",");
     totalData[0].negative = largerThanThousand.join("");
   }
   if (
@@ -300,7 +301,8 @@ function onEachFeature(feature, layer) {
   layer.on({
     mouseover: highlightFeature,
     mouseout: resetHighlight,
-    click: onClick,
+    // click: onClick,
+    contextmenu: highlightFeature,
   });
 }
 
