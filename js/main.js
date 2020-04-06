@@ -60,8 +60,8 @@ const STORE = {
 };
 
 function createMap(covidData) {
-  const corner1 = L.latLng(6.8217305109,-179.1295026197);
-  const corner2 = L.latLng(74.2072030765,-49.9302838697);
+  const corner1 = L.latLng(6.8217305109, -179.1295026197);
+  const corner2 = L.latLng(74.2072030765, -49.9302838697);
   const bounds = L.latLngBounds(corner1, corner2);
   const ACCESS_TOKEN =
     "pk.eyJ1IjoidW5jdWx0aXZhdGVkcmFiYml0IiwiYSI6ImNrNWs1YXJ0YjBha2IzanF4YmhmcHR2ZTUifQ.3YhMGRpoosV0u46J39b3lQ";
@@ -84,9 +84,9 @@ function createMap(covidData) {
       state.appreviation = STORE.states[i][1];
     }
   });
-  covidData.map(d => {
+  covidData.map((d) => {
     const appreviation = d.state;
-    statesData.features.map(state => {
+    statesData.features.map((state) => {
       if (state.properties.appreviation === appreviation) {
         state.properties.positive = d.positive;
         state.properties.deaths = d.death;
@@ -134,12 +134,12 @@ function createTotalsInfoDisplay(totalData) {
     totalData[0].death = largerThanThousand.join("");
   }
   STORE.totalInfo = L.control({ position: "bottomleft" });
-  STORE.totalInfo.onAdd = function(map) {
+  STORE.totalInfo.onAdd = function (map) {
     this._div = L.DomUtil.create("div", "total-info info"); // create a div with a class "info"
     this.update();
     return this._div;
   };
-  STORE.totalInfo.update = function(props) {
+  STORE.totalInfo.update = function (props) {
     this._div.innerHTML = `
       <h4>COUNTRY-WIDE TOTALS</h4>
       <span class="info-title">TOTAL TESTED POSITIVE:</span> ${totalData[0].positive}<br>
@@ -153,13 +153,13 @@ function createTotalsInfoDisplay(totalData) {
 
 function createInfoControls() {
   STORE.info = L.control();
-  STORE.info.onAdd = function(map) {
+  STORE.info.onAdd = function (map) {
     this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
     this.update();
     return this._div;
   };
 
-  STORE.info.update = function(props) {
+  STORE.info.update = function (props) {
     if (props) {
       if (props.deaths === null) {
         props.deaths = 0;
@@ -193,7 +193,7 @@ function createInfoControls() {
 function createLegend() {
   const legend = L.control({ position: "bottomright" });
 
-  legend.onAdd = function(map) {
+  legend.onAdd = function (map) {
     const div = L.DomUtil.create("div", "info legend"),
       grades = [0, 50, 100, 200, 500, 1000, 2500, 5000, 10000],
       labels = [];
@@ -237,29 +237,29 @@ function getColor(d) {
 function getPositiveResults() {
   const url = "https://covidtracking.com/api/states";
   fetch(url)
-    .then(res => {
+    .then((res) => {
       if (res.ok) {
         return res.json();
       } else {
         throw new Error("something went wrong");
       }
     })
-    .then(data => createMap(data))
-    .catch(err => console.log(err));
+    .then((data) => createMap(data))
+    .catch((err) => console.log(err));
 }
 
 function getTotalCumulativeData() {
-  const url = "https://covidtracking.com/api/us";
+  const url = "https://covidtracking.com/api/v1/us/current.json";
   fetch(url)
-    .then(res => {
+    .then((res) => {
       if (res.ok) {
         return res.json();
       } else {
         throw new Error("something went wrong");
       }
     })
-    .then(data => createTotalsInfoDisplay(data))
-    .catch(err => console.log(err));
+    .then((data) => createTotalsInfoDisplay(data))
+    .catch((err) => console.log(err));
 }
 
 function style(data) {
@@ -302,7 +302,7 @@ function onEachFeature(feature, layer) {
     mouseover: highlightFeature,
     mouseout: resetHighlight,
     // click: onClick,
-    contextmenu: highlightFeature,
+    // contextmenu: highlightFeature,
   });
 }
 

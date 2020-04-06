@@ -1,6 +1,6 @@
-# coronavirus-in-the-usa
+# Coronavirus in the United States
 
-Tracking Covid-19 in the United States.
+Tracking and charting Covid-19 cases n the United States.
 
 ## Motivation
 
