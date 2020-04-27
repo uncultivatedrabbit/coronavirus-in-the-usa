@@ -13,8 +13,8 @@ function getUserInput() {
 
 function getDailyCoronavirusData(userSelection, userSelectedState) {
   let url;
-  if (userSelection === undefined) {
-    url = `https://covidtracking.com/api/v1/us/current.json`;
+  if (!userSelection) {
+    url = `https://covidtracking.com/api/v1/us/daily.json`;
   } else {
     const label = document.getElementById("charts-label");
     label.innerText = userSelectedState;
@@ -51,7 +51,9 @@ function getDailyCoronavirusData(userSelection, userSelectedState) {
 function dataParser(data) {
   let dailyDeaths = [];
   let dailyPositives = [];
+  
   data.forEach(dailyData => {
+    console.log(dailyData)
     dailyPositives.push(dailyData.positive);
     if (dailyData.death === null || !dailyData.death) {
       dailyData.death = 0;
@@ -123,7 +125,7 @@ function createDeathChart(dailyDeaths) {
               displayFormats: {
                 day: "MMM D",
               },
-              min: "2020-03-04",
+              min: "2020-01-22",
               max: Date.now(),
             },
             ticks: {
@@ -166,6 +168,7 @@ function createDeathChart(dailyDeaths) {
 }
 
 function createPositivesChart(dailyPositives) {
+  console.log(dailyPositives)
   const ctx = document.getElementById("positiveChart").getContext("2d");
   const postivesChart = new Chart(ctx, {
     type: "line",
@@ -226,7 +229,7 @@ function createPositivesChart(dailyPositives) {
               displayFormats: {
                 day: "MMM D",
               },
-              min: "2020-03-04",
+              min: "2020-01-22",
               max: Date.now(),
             },
             ticks: {
