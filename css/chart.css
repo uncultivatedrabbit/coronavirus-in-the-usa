@@ -16,7 +16,7 @@
   overflow: auto;
 }
 #chart1, #chart2{
-  width: 40%;
+  width: 100vw;
 }
 .charts-label {
   text-transform: uppercase;
