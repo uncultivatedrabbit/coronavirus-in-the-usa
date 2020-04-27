@@ -14,7 +14,7 @@ function getUserInput() {
 function getDailyCoronavirusData(userSelection, userSelectedState) {
   let url;
   if (userSelection === undefined) {
-    url = `https://covidtracking.com/api/us/daily`;
+    url = `https://covidtracking.com/api/us/current.json`;
   } else {
     const label = document.getElementById("charts-label");
     label.innerText = userSelectedState;
