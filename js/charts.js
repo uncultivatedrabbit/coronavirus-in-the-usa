@@ -18,7 +18,7 @@ function getDailyCoronavirusData(userSelection, userSelectedState) {
   } else {
     const label = document.getElementById("charts-label");
     label.innerText = userSelectedState;
-    url = `https://covidtracking.com/api/states/daily?state=${userSelection}`;
+    url = `https://covidtracking.com/api/v1/states/${userSelection}/daily.json`;
   }
   fetch(url)
     .then((res) => {
@@ -68,7 +68,7 @@ function dataParser(data) {
   const totalDaysCharted =
     (
       Math.round(presentDay.getTime() - firstChartedDay.getTime()) / oneDay
-    ).toFixed(0) - 1;
+    ).toFixed(0);
 
   if (
     dailyDeaths.length !== totalDaysCharted &&
